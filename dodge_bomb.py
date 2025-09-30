@@ -2,7 +2,7 @@ import os
 import random
 import sys
 import pygame as pg
-
+import time
 
 WIDTH, HEIGHT = 1100, 650
 DELTA = {
@@ -28,27 +28,29 @@ def check_bound(rct: pg.Rect) -> tuple[bool,bool]:
     return yoko, tate
 
 def gameover(screen: pg.Surface) -> None:
-    screen = pg.display.set_mode((800,600))
-    screen = pg.Surface((20,20))
-    pg.draw.rect(screen, (0,0,0),(0,0,1600,900))
-    screen.set_alpha(200)
-    fonto = pg.font.Font(None,80)
-    txt = fonto.render("Game Over",True,(255,255,255))
-    screen.blit(txt, [300, 200])
+    """
+    引数:画面Surface
+    戻り値:なし
+    """
+    go_img = pg.Surface((WIDTH,HEIGHT))
+    go_img = screen.fill((0, 0, 0))
+    go_img.set_alpha(200)
+    fonto = pg.font.Font(None,150)
+    go_txt = fonto.render("Game Over",True,(255,255,255))
+    go_img.blit(go_txt, [WIDTH//2 - go_txt.get_width()//2, HEIGHT//2 - go_txt.get_height()//2])
     kk8_img = pg.image.load("fig/8.png")
-    kk8_img = pg.Surface((20,20))
+    kk8_img = pg.Surface((WIDTH,HEIGHT))
     screen.blit(kk8_img,[300,200])
-    time = pg.time.Clock()
-    if pg.display.update():
-        time.sleep(5)
+    pg.display.update()
+    time.sleep(5)
 
-def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
-    for r in range(1, 11):
-        bb_img = pg.Surface((20*r, 20*r))
-        pg.draw.circle(bb_img, (255, 0, 0),(10*r, 10*r), 10*r)
-        bb_imgs.append(bb_img)
-        bb_accs = [a for a in range(1, 11)]
-        return bb_imgs, bb_accs
+# def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+#     for r in range(1, 11):
+#         bb_img = pg.Surface((20*r, 20*r))
+#         pg.draw.circle(bb_img, (255, 0, 0),(10*r, 10*r), 10*r)
+#         bb_imgs.append(bb_img)
+#         bb_accs = [a for a in range(1, 11)]
+#         return bb_imgs, bb_accs
     
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -66,9 +68,9 @@ def main():
     vx, vy = +5, +5  # 爆弾の速度
     clock = pg.time.Clock()
     tmr = 0
-    init_bb_imgs()
-    avx = vx*bb_accs[min(tmr//500, 9)]
-    bb_img = bb_imgs[min(tmr//500, 9)]
+    # init_bb_imgs()
+    # avx = vx*bb_accs[min(tmr//500, 9)]
+    # bb_img = bb_imgs[min(tmr//500, 9)]
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
