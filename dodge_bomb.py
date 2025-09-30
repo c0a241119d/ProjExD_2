@@ -26,6 +26,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool,bool]:
     if rct.top < 0 or HEIGHT < rct.bottom: #縦方向にはみ出ていたら
         tate = False
     return yoko, tate
+
 def gameover(screen: pg.Surface) -> None:
     screen = pg.display.set_mode((800,600))
     screen = pg.Surface((20,20))
@@ -40,13 +41,15 @@ def gameover(screen: pg.Surface) -> None:
     time = pg.time.Clock()
     if pg.display.update():
         time.sleep(5)
+
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     for r in range(1, 11):
         bb_img = pg.Surface((20*r, 20*r))
         pg.draw.circle(bb_img, (255, 0, 0),(10*r, 10*r), 10*r)
-        bb_img.append(bb_img)
+        bb_imgs.append(bb_img)
         bb_accs = [a for a in range(1, 11)]
-        return bb_img, bb_accs
+        return bb_imgs, bb_accs
+    
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
