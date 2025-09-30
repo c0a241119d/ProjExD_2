@@ -26,9 +26,20 @@ def check_bound(rct: pg.Rect) -> tuple[bool,bool]:
     if rct.top < 0 or HEIGHT < rct.bottom: #縦方向にはみ出ていたら
         tate = False
     return yoko, tate
-
-
-
+def gameover(screen: pg.Surface) -> None:
+    screen = pg.display.set_mode((800,600))
+    screen = pg.Surface((20,20))
+    pg.draw.rect(screen, (0,0,0),(0,0,1600,900))
+    screen.set_alpha(200)
+    fonto = pg.font.Font(None,80)
+    txt = fonto.render("Game Over",True,(255,255,255))
+    screen.blit(txt, [300, 200])
+    kk8_img = pg.image.load("fig/8.png")
+    kk8_img = pg.Surface((20,20))
+    screen.blit(kk8_img,[300,200])
+    time = pg.time.Clock()
+    if pg.display.update():
+        time.sleep(5)
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -51,6 +62,7 @@ def main():
                 return
         screen.blit(bg_img, [0, 0]) 
         if kk_rct.colliderect(bb_rct):
+            gameover(screen)
             return #ゲームオーバー
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -82,7 +94,6 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
 
 if __name__ == "__main__":
     pg.init()
